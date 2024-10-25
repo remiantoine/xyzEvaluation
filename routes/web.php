@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TrackController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\CategorieController;
 use App\Http\Middleware\EnsureValidCodeMiddleware;
 
 // Auth
@@ -38,5 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
 
+    // Categories
+    Route::get('/categories', [CategorieController::class, 'index'])->name('app.categories.index');
+    Route::get('/categories/{category}', [CategorieController::class, 'show'])->name('app.categories.show');
     Route::fallback(fn () => abort(404));
 });

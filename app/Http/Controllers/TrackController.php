@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Week;
 use App\Models\Track;
+use App\Models\Categorie;
 use App\Players\Player;
 use App\Rules\PlayerUrl;
 use App\Services\UserService;
@@ -38,6 +39,7 @@ class TrackController extends Controller
         return view('app.tracks.create', [
             'week' => Week::current(),
             'remaining_tracks_count' => $user->remainingTracksCount(),
+            'categories' => Categorie::all(),
         ]);
     }
 
@@ -52,6 +54,7 @@ class TrackController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'artist' => ['required', 'string', 'max:255'],
             'url' => ['required', 'url', new PlayerUrl()],
+            'category_id' => ['required', 'exists:categories,id'],
         ]);
 
         DB::beginTransaction();
@@ -67,10 +70,11 @@ class TrackController extends Controller
             // Fetch track detail from provider (YT, SC)
             $details = $player->details($track->url);
 
-            // Set player_id, track_id and thumbnail_url
+            // Set player_id, track_id, thumbnail_url and category_id.
             $track->player = $details->player_id;
             $track->player_track_id = $details->track_id;
             $track->player_thumbnail_url = $details->thumbnail_url;
+            $track->category_id = $validated['category_id'];
 
             // Publish track
             $track->save();

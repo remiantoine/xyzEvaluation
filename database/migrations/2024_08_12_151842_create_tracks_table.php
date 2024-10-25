@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('player')->nullable();
             $table->string('player_track_id')->nullable();
             $table->string('player_thumbnail_url')->nullable();
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +33,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('tracks');
+        Schema::enableForeignKeyConstraints();
     }
 };

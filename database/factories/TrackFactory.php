@@ -28,6 +28,7 @@ class TrackFactory extends Factory
             'artist' => fake()->name(),
             'title' => fake()->sentence(2),
             'url' => fake()->randomElement(['https://youtube.com/watch?v=ID', 'https://soundcloud/USER/TRACK']),
+            'category_id' => fake()->numberBetween(1, 5),
             'created_at' => $published_at,
             'updated_at' => $published_at,
         ];

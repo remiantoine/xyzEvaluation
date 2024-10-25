@@ -29,6 +29,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints(); // Désactiver les contraintes
         Schema::dropIfExists('weeks');
+        Schema::enableForeignKeyConstraints(); // Réactiver les contraintes
     }
 };
